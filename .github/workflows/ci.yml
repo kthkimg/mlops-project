@@ -27,7 +27,7 @@ jobs:
           echo "$VPN_CONFIG" > /tmp/vpn_config.ovpn
 
           # VPN 연결 시도
-          sudo openvpn --config /tmp/vpn_config.ovpn --daemon
+          sudo openvpn --config /tmp/vpn_config.ovpn
 
       - name: Wait for a VPN connection
         timeout-minutes: 1
