@@ -19,8 +19,8 @@ jobs:
           echo "${{ secrets.SECRET_USERNAME_PASSWORD }}" > secret.txt
           echo "${{ secrets.TLS_KEY }}" > tls.key          
 
-      # - name: Connect VPN
-      #   run: sudo openvpn --config ".github/workflows/client.ovpn" --log "vpn.log" --daemon
+      - name: Connect VPN
+        run: sudo openvpn --config ".github/workflows/client.ovpn" --log "vpn.log" --daemon
 
       # - name: Wait for a VPN connection
       #   timeout-minutes: 1
