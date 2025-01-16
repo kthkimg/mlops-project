@@ -14,7 +14,9 @@ jobs:
           sudo apt update
           sudo apt install -y openvpn openvpn-systemd-resolved
           echo "$VPN_CONFIG" > /tmp/vpn_config.ovpn
+          echo "hello world" > /tmp/temp.txt
           cat /tmp/vpn_config.ovpn
+          cat /tmp/temp.txt
           ls /tmp
       - name: Connect to VPN
         # uses: "kota65535/github-openvpn-connect-action@v2"
