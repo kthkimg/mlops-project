@@ -17,13 +17,13 @@ jobs:
           ls /tmp
       - name: Connect to VPN
         # uses: "kota65535/github-openvpn-connect-action@v2"
-        run: |
-          pwd
-          echo "hello"
-          ls /tmp
-          echo "hello"
-          ls /home/runner/work/mlops-project/mlops-project
-        # with:
-          # config_file: /home/runner/work/mlops-project/mlops-project/vpn_config.ovpn
-          # username: ${{ secrets.VPN_USERNAME }}
-          # password: ${{ secrets.VPN_PASSWORD }}
+        # run: |
+          # pwd
+          # echo "hello"
+          # ls /tmp
+          # echo "hello"
+          # ls /home/runner/work/mlops-project/mlops-project
+        with:
+          config_file: /tmp/vpn_config.ovpn
+          username: ${{ secrets.VPN_USERNAME }}
+          password: ${{ secrets.VPN_PASSWORD }}
