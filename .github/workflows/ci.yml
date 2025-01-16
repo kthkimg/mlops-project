@@ -13,7 +13,7 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y openvpn openvpn-systemd-resolved
-          echo "$VPN_CONFIG" > /tmp/vpn_config.ovpn
+          echo $VPN_CONFIG > /tmp/vpn_config.ovpn
           echo "hello world" > /tmp/temp.txt
           ls /tmp
           cat /tmp/temp.txt
