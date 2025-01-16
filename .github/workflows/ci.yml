@@ -65,8 +65,10 @@ jobs:
           echo "Host remote-server
           HostName $SSH_HOST
           User $SSH_USER
+          Port $SSH_PORT
           IdentityFile ~/.ssh/id_rsa
           StrictHostKeyChecking no" > ~/.ssh/config
+
 
           # SSH 연결 테스트
           ssh remote-server 'echo "SSH 연결 성공!"'
