@@ -19,13 +19,14 @@ jobs:
           VPN_CONFIG: ${{ secrets.VPN_CONFIG }}
           SSH_HOST: ${{ secrets.SSH_HOST }}
         run: |
-          echo "${{ secrets.SECRET_USERNAME_PASSWORD }}" > /tmp/secret.txt
+          echo $VPN_USERNAME > /tmp/secret.txt
+          echo $VPN_PASSWORD >> /tmp/secret.txt
           # OpenVPN3 설치를 위한 리포지토리 추가
           sudo apt-get update
           sudo apt-get --assume-yes --no-install-recommends install openvpn
           # VPN 설정 파일을 /tmp에 저장
           echo "$VPN_CONFIG" > /tmp/vpn_config.ovpn
-
+          ls /tmp/secret.txt
           # VPN 연결 시도
           sudo openvpn --config /tmp/vpn_config.ovpn
 
