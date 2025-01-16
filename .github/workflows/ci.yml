@@ -17,7 +17,7 @@ jobs:
           echo "hello world" > /tmp/temp.txt
           ls /tmp
           cat /tmp/temp.txt
-          # cat /tmp/vpn_config.ovpn
+          cat /tmp/vpn_config.ovpn
       - name: Connect to VPN
         uses: "kota65535/github-openvpn-connect-action@v2"
         # run: |
