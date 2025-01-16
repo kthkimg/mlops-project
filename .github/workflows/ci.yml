@@ -13,11 +13,11 @@ jobs:
           sudo apt-get update
           sudo apt-get --assume-yes --no-install-recommends install openvpn          
 
-      # - name: Setup VPN config
-      #   run: |
-      #     echo "${{ secrets.CA_CRT }}" > ca.crt
-      #     echo "${{ secrets.SECRET_USERNAME_PASSWORD }}" > secret.txt
-      #     echo "${{ secrets.TLS_KEY }}" > tls.key          
+      - name: Setup VPN config
+        run: |
+          echo "${{ secrets.CA_CRT }}" > ca.crt
+          echo "${{ secrets.SECRET_USERNAME_PASSWORD }}" > secret.txt
+          echo "${{ secrets.TLS_KEY }}" > tls.key          
 
       # - name: Connect VPN
       #   run: sudo openvpn --config ".github/workflows/client.ovpn" --log "vpn.log" --daemon
