@@ -50,14 +50,13 @@ jobs:
       #     # 예시로 서버에서 파일 목록 확인하기
       #     ssh $SSH_USER@$SSH_HOST 'll /data/ephemeral/home/dev'
       - name: execute remote ssh
-        uses: appleboy/ssh-action@master
+        uses: appleboy/ssh-action@v1.2.0
         with:
           host: ${{ secrets.SSH_HOST }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          script: |
-            whoami
+          script: whoami
       # - name: Kill VPN connection
       #   if: always()
       #   run: |
