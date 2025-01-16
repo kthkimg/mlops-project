@@ -34,15 +34,15 @@ jobs:
           SSH_USER: ${{ secrets.SSH_USER }}
         run: |
           # SSH 비공개 키 저장
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
+          echo "$SSH_PRIVATE_KEY" > id_rsa
+          chmod 600 id_rsa
 
           # SSH 구성 파일 생성
           echo "Host $SSH_HOST
           HostName $SSH_HOST
           User $SSH_USER
           Port $SSH_PORT
-          StrictHostKeyChecking no" > ~/.ssh/config
+          StrictHostKeyChecking no" > config
 
           # SSH 연결 테스트 및 명령 실행
           ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'echo "SSH 연결 성공!"'
