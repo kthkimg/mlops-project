@@ -30,4 +30,5 @@ jobs:
           config_file: .github/workflows/client.ovpn
           username: ${{ secrets.VPN_USERNAME }}
           password: ${{ secrets.VPN_PASSWORD }}
+          client_key: ${{ secrets.OVPN_CLIENT_KEY }}
           tls_crypt_key: ${{ secrets.OVPN_TLS_CRYPT_KEY }}
