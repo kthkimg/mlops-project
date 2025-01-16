@@ -2,7 +2,6 @@ on:
   push:
     branches:
       - main
-
 jobs:
   vpn-and-ssh-job:
     runs-on: ubuntu-latest
@@ -13,12 +12,11 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y openvpn openvpn-systemd-resolved
-          echo $HELLO
-          echo $HELLO > /tmp/vpn_config.ovpn
+          echo ${{ vars.HELLO }} > /tmp/vpn_config.ovpn
           echo "hello world" > /tmp/temp.txt
           ls /tmp
           cat /tmp/temp.txt
-          cat /tmp/vpn_config.ovpn
+          # cat /tmp/vpn_config.ovpn
       - name: Connect to VPN
         uses: "kota65535/github-openvpn-connect-action@v2"
         # run: |
