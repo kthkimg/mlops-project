@@ -17,21 +17,20 @@ jobs:
           VPN_USERNAME: ${{ secrets.VPN_USERNAME }}
           VPN_PASSWORD: ${{ secrets.VPN_PASSWORD }}
           VPN_CONFIG: ${{ secrets.VPN_CONFIG }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
         run: |
           # OpenVPN3 설치를 위한 리포지토리 추가
           sudo apt-get update
-          sudo apt-get install -y gnupg2 lsb-release
-          curl -fsSL https://packages.openvpn.net/packages-repo.gpg | sudo tee /etc/apt/trusted.gpg.d/openvpn.asc
-          DISTRO=$(lsb_release -c | awk '{print $2}')
-          echo "deb http://packages.openvpn.net/openvpn3/debian $DISTRO main" | sudo tee /etc/apt/sources.list.d/openvpn-packages.list
-          sudo apt-get update
-          sudo apt-get install -y openvpn3
+          sudo apt-get --assume-yes --no-install-recommends install openvpn
           # VPN 설정 파일을 /tmp에 저장
           echo "$VPN_CONFIG" > /tmp/vpn_config.ovpn
 
           # VPN 연결 시도
-          sudo openvpn3 session start --config /tmp/vpn_config.ovpn --username $VPN_USERNAME --password $VPN_PASSWORD
-          sudo openvpn3 session status
+          sudo openvpn --config /tmp/vpn_config.ovpn --daemon
+
+      - name: Wait for a VPN connection
+        timeout-minutes: 1
+        run: until ping -c1 $SSH_HOST; do sleep 2; done          
 
       - name: Set up SSH
         env:
