@@ -1,37 +1,22 @@
-name: SSH 명령 실행
-
 on:
   push:
     branches:
       - main
 
 jobs:
-  ssh-job:
-    runs-on: [self-hosted, windows]  # 로컬 Windows 환경에서 실행
-
+  vpn-and-ssh-job:
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      - name: Set up SSH
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-          SSH_PORT: ${{ secrets.SSH_PORT }}
-          SSH_USER: ${{ secrets.SSH_USER }}
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install OpenVPN
         run: |
-          # SSH 비공개 키 저장
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-
-          # SSH 구성 파일 생성
-          echo "Host $SSH_HOST
-          HostName $SSH_HOST
-          User $SSH_USER
-          Port $SSH_PORT
-          StrictHostKeyChecking no" > ~/.ssh/config
-
-          # SSH 연결 테스트 및 명령 실행
-          ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'echo "SSH 연결 성공!"'
-          # 예시로 서버에서 파일 목록 확인하기
-          ssh $SSH_USER@$SSH_HOST 'll /data/ephemeral/home/dev'
+          sudo apt update
+          sudo apt install -y openvpn openvpn-systemd-resolved
+          echo "$VPN_CONFIG" > /tmp/vpn_config.ovpn
+      - name: Connect to VPN
+        uses: "kota65535/github-openvpn-connect-action@v2"
+        with:
+          config_file: /tmp/vpn_config.ovpn
+          username: ${{ secrets.VPN_USERNAME }}
+          password: ${{ secrets.VPN_PASSWORD }}
