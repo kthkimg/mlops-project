@@ -49,29 +49,15 @@ jobs:
       #     ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'echo "SSH 연결 성공!"'
       #     # 예시로 서버에서 파일 목록 확인하기
       #     ssh $SSH_USER@$SSH_HOST 'll /data/ephemeral/home/dev'
-      - name: Set up SSH key and configuration
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
-          SSH_HOST: ${{ secrets.SSH_HOST }}
-          SSH_USER: ${{ secrets.SSH_USER }}
-          SSH_PORT: ${{ secrets.SSH_PORT }}
-        run: |
-          # SSH 비공개 키를 파일로 저장
-          mkdir -p ~/.ssh
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-
-          # SSH 설정 파일 생성
-          echo "Host remote-server
-          HostName $SSH_HOST
-          User $SSH_USER
-          Port $SSH_PORT
-          IdentityFile ~/.ssh/id_rsa
-          StrictHostKeyChecking no" > ~/.ssh/config
-
-
-          # SSH 연결 테스트
-          ssh remote-server 'echo "SSH 연결 성공!"'
+      - name: execute remote ssh
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            whoami
       # - name: Kill VPN connection
       #   if: always()
       #   run: |
