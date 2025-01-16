@@ -30,9 +30,8 @@ jobs:
           echo "$VPN_CONFIG" > /tmp/vpn_config.ovpn
 
           # VPN 연결 시도
-          sudo openvpn3 config import /tmp/vpn_config.ovpn
           sudo openvpn3 session start --config /tmp/vpn_config.ovpn --username $VPN_USERNAME --password $VPN_PASSWORD
-          sudo systemctl start openvpn3
+          sudo openvpn3 session status
 
       - name: Set up SSH
         env:
