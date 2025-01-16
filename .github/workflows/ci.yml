@@ -1,0 +1,54 @@
+name: VPN 연결 후 SSH 명령 실행
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  vpn-and-ssh-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up OpenVPN and Connect to VPN
+        env:
+          VPN_USERNAME: ${{ secrets.VPN_USERNAME }}
+          VPN_PASSWORD: ${{ secrets.VPN_PASSWORD }}
+          VPN_CONFIG: ${{ secrets.VPN_CONFIG }}
+        run: |
+          # OpenVPN 설치
+          sudo apt-get update
+          sudo apt-get install -y openvpn3
+
+          # VPN 설정 파일을 /tmp에 저장
+          echo "$VPN_CONFIG" > /tmp/vpn_config.ovpn
+
+          # VPN 연결 시도
+          sudo openvpn3 config import /tmp/vpn_config.ovpn
+          sudo openvpn3 session start --config /tmp/vpn_config.ovpn --username $VPN_USERNAME --password $VPN_PASSWORD
+          sudo systemctl start openvpn3
+
+      - name: Set up SSH
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+        run: |
+          # SSH 비공개 키 저장
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+
+          # SSH 구성 파일 생성
+          echo "Host $SSH_HOST
+          HostName $SSH_HOST
+          User $SSH_USER
+          Port $SSH_PORT
+          StrictHostKeyChecking no" > ~/.ssh/config
+
+          # SSH 연결 테스트 및 명령 실행
+          ssh -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST 'echo "SSH 연결 성공!"'
+          # 예시로 서버에서 파일 목록 확인하기
+          ssh $SSH_USER@$SSH_HOST 'll /data/ephemeral/home/dev'
