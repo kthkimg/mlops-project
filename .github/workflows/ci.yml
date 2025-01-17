@@ -57,7 +57,9 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          script: whoami
+          script: |
+            whoami
+            ll /home/ubuntu
       # - name: Kill VPN connection
       #   if: always()
       #   run: |
