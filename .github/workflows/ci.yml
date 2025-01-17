@@ -37,12 +37,12 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             # Stop any existing containers
-            docker stop api-container || true
-            docker rm api-container || true
+            docker stop ${{ secrets.DOCKER_IMAGE_NAME }} || true
+            docker rm ${{ secrets.DOCKER_IMAGE_NAME }} || true
             # Pull the latest image from Docker Hub
             docker pull ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest
             # Run the container
-            docker run -d --name ${{ secrets.DOCKER_IMAGE_NAME }} -p 30239:80 ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest
+            docker run -d --name ${{ secrets.DOCKER_IMAGE_NAME }} -p 30239:30239 ${{ secrets.DOCKER_USERNAME }}/${{ secrets.DOCKER_IMAGE_NAME }}:latest
   # ssh-job:
   #   runs-on: ubuntu-latest
   #   steps:

@@ -8,3 +8,8 @@ app = FastAPI()
 def add_numbers(a: int, b: int):
     result = a + b
     return {"result": result}
+
+@app.get("/mul")
+def multiply_numbers(a: int, b: int):
+    result = a * b
+    return {"result": result}
