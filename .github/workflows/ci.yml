@@ -59,7 +59,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             whoami
-            ll /home/ubuntu
+            ls /home/ubuntu
       # - name: Kill VPN connection
       #   if: always()
       #   run: |
