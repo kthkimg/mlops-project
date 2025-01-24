@@ -13,3 +13,7 @@ def add_numbers(a: int, b: int):
 def multiply_numbers(a: int, b: int):
     result = a * b
     return {"result": result}
+
+@app.get("/hello")
+def multiply_numbers():
+    return "사랑해요~"
